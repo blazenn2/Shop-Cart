@@ -18,5 +18,13 @@
   },
   "author": "",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blazenn2/Shop-Cart.git"
+  },
+  "bugs": {
+    "url": "https://github.com/blazenn2/Shop-Cart/issues"
+  },
+  "homepage": "https://github.com/blazenn2/Shop-Cart#readme",
   "description": ""
 }

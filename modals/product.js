@@ -8,6 +8,7 @@ exports.product = (dataRecieved) => {
     let products = [];
     fs.readFile(p, (err, data) => {
         if (!err) products = JSON.parse(data);
+        dataRecieved.id = Math.random().toString();
         products.push(dataRecieved);
         fs.writeFile(p, JSON.stringify(products), err => console.log(err));
     });
@@ -19,3 +20,11 @@ exports.viewProduct = (cb) => {
         return cb(JSON.parse(data));
     });
 };
+
+exports.findById = (id, cb) => {
+    fs.readFile(p, (err, data) => {
+        if (err) return cb([]);
+        const products = JSON.parse(data);
+        return cb(products.find(val => Number(val.id) === Number(id)));
+    });
+}
