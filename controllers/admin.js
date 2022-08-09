@@ -1,6 +1,10 @@
-// const products = [];
-
 const productModal = require('../modals/product');
+
+exports.getProducts = (req, res) => {
+    productModal.viewProduct(products => {
+        res.render('admin/products', { prods: products, pageTitle: 'Admin Products', path: '/admin/products' });
+    });
+};
 
 exports.getAddProduct = (req, res, next) => {
     // res.sendFile(path.join(rootDir, 'views', 'add-product.pug'));
@@ -10,15 +14,6 @@ exports.getAddProduct = (req, res, next) => {
 exports.postAddProduct = (req, res, next) => {
     // console.log(req.body);
     // products.push({ title: req.body.title });
-    productModal.product({ pageTitle: req.body.title });
+    productModal.product({ title: req.body.title, imageUrl: req.body.imageUrl, price: req.body.price, description: req.body.description});
     res.redirect('/');
-}
-
-exports.getShop = (req, res, next) => {
-    // console.log(adminData.products);
-    // res.sendFile(path.join(rootDir, 'views', 'shop.pug'));
-    productModal.viewProduct(products => {
-        console.log(products);
-        res.render('shop/product-list', { prods: products, pageTitle: "Shop", path: '/' });
-    });
 }
