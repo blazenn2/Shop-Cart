@@ -33,7 +33,7 @@ exports.getOrders = (req, res) => {
 exports.getProducts = (req, res) => {
     const prodId = req.params.productId;
     productModal.findById(prodId, product => {
-        console.log(product);
+        // console.log(product);
         res.render('shop/product-detail', { prods: product, pageTitle: product.title, path: '/products' })
     });
 };

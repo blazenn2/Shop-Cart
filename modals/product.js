@@ -1,3 +1,4 @@
+const { json } = require('body-parser');
 const fs = require('fs');
 
 const path = require('path');
@@ -28,3 +29,22 @@ exports.findById = (id, cb) => {
         return cb(products.find(val => Number(val.id) === Number(id)));
     });
 }
+
+exports.updateProduct = (product) => {
+    fs.readFile(p, (err, data) => {
+        if (err) console.log(err);
+        const allProducts = JSON.parse(data);
+        const findProductIndex = allProducts.findIndex(val => Number(val.id) === Number(product.id));
+        allProducts[findProductIndex] = product;
+        fs.writeFile(p, JSON.stringify(allProducts), err => console.log(err));
+    });
+};
+
+exports.deleteProduct = (productId) => {
+    fs.readFile(p, (err, data) => {
+        if (err) console.log(err);
+        const allProducts = JSON.parse(data);
+        const filteringProducts = allProducts.filter(val => Number(val.id) !== Number(productId));
+        fs.writeFile(p, JSON.stringify(filteringProducts), err => console.log(err));
+    });
+};
