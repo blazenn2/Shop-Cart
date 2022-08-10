@@ -1,5 +1,6 @@
 const productModal = require('../modals/product');
 
+
 exports.getProducts = (req, res) => {
     productModal.viewProduct(products => {
         res.render('admin/products', { prods: products, pageTitle: 'Admin Products', path: '/admin/products' });
@@ -35,5 +36,6 @@ exports.postEditProduct = (req, res) => {
 
 exports.postDeleteProduct = (req, res) => {
     productModal.deleteProduct(req.body.id);
+  
     res.redirect('/');
 };

@@ -1,4 +1,4 @@
-const { json } = require('body-parser');
+const cartModal = require('../modals/cart');
 const fs = require('fs');
 
 const path = require('path');
@@ -45,6 +45,10 @@ exports.deleteProduct = (productId) => {
         if (err) console.log(err);
         const allProducts = JSON.parse(data);
         const filteringProducts = allProducts.filter(val => Number(val.id) !== Number(productId));
+        const deletedProduct = allProducts.filter(val => Number(val.id) === Number(productId));
+        // console.log();
+        const deletedProductPrice = Number(deletedProduct[0].price);
+        cartModal.deleteWholeProduct(productId, deletedProductPrice);
         fs.writeFile(p, JSON.stringify(filteringProducts), err => console.log(err));
     });
 };
