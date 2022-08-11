@@ -26,19 +26,21 @@ exports.addProduct = (productId, product) => {
     });
 };
 
-exports.deleteProduct = (id, productPrice) => {
+exports.deleteCart = (id, productPrice) => {
     fs.readFile(p, (err, data) => {
         if (err) console.log(err);
         const cart = JSON.parse(data);
-        const productIndex = cart.products.findIndex(val => Number(val.id) === Number(id));
-        let finalCart;
-        if (cart.products[productIndex].qty === 1) finalCart = cart.products.filter(val => Number(val.id) !== Number(id));
-        else {
-            cart.products[productIndex].qty -= 1;
-            cart.totalPrice -= productPrice;
-            finalCart = cart;
+        const filteredCart = cart.products.filter(val => Number(val.id) !== Number(id));
+        if (filteredCart.length !== cart.products.length) {
+            const indexOfdeletedProduct = cart.products.findIndex(val => Number(val.id) === Number(id));
+            const deletedProductQuantity = cart.products.filter(val => Number(val.id) === Number(id))[0].qty;
+            console.log(deletedProductQuantity);
+            if (Number(deletedProductQuantity) > 1) cart.products[indexOfdeletedProduct].qty -= 1;
+            else cart.products = filteredCart;
+            cart.totalPrice = Number(cart.totalPrice) - Number(productPrice);
+            // console.log(cart);
+            fs.writeFile(p, JSON.stringify(cart), err => console.log(err));
         }
-        fs.writeFile(p, JSON.stringify(finalCart), err => console.log(err));
     });
 };
 
@@ -55,3 +57,11 @@ exports.deleteWholeProduct = (id, productPrice) => {
         }
     });
 }
+
+exports.getCart = (cb) => {
+    fs.readFile(p, (err, data) => {
+        if (err) return cb([]);
+        const cart = JSON.parse(data);
+        return cb(cart);
+    });
+};

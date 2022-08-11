@@ -1,1 +1,16 @@
-[{"title":"JavaScript Book By John Duckett","imageUrl":"https://images-na.ssl-images-amazon.com/images/I/71viHxTLKgL.jpg","price":"10","description":"Master Javascript language today!","id":"0.2617777232952536"},{"title":"PHP Book","imageUrl":"https://d1w7fb2mkkr3kw.cloudfront.net/assets/images/book/lrg/9781/4302/9781430231141.jpg","price":"15","description":"Master PHP using this book","id":"0.480163077174105"}]
+[
+    {
+        "title": "JavaScript Book By John Duckett",
+        "imageUrl": "https://images-na.ssl-images-amazon.com/images/I/71viHxTLKgL.jpg",
+        "price": "10",
+        "description": "Master Javascript language today!",
+        "id": "0.2617777232952536"
+    },
+    {
+        "title": "PHP Book",
+        "imageUrl": "https://d1w7fb2mkkr3kw.cloudfront.net/assets/images/book/lrg/9781/4302/9781430231141.jpg",
+        "price": "15",
+        "description": "Master PHP using this book",
+        "id": "0.480163077174105"
+    }
+]
