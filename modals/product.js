@@ -1,54 +1,18 @@
-const cartModal = require('../modals/cart');
-const fs = require('fs');
+const db = require('../util/database');
 
-const path = require('path');
+// <--------------------- POST ALL PRODUCTS --------------------> //
+exports.product = (dataRecieved) => (db.execute('INSERT INTO products (title, imageURL, price, description) VALUES (?, ?, ?, ?)',
+    [dataRecieved.title, dataRecieved.imageUrl, dataRecieved.price, dataRecieved.description]));
 
-const p = path.join(path.dirname(process.mainModule.filename), 'data', 'products.json');
+// <--------------------- GET ALL PRODUCTS --------------------> //
+exports.viewProduct = () => (db.execute('SELECT * FROM products'));
 
-exports.product = (dataRecieved) => {
-    let products = [];
-    fs.readFile(p, (err, data) => {
-        if (!err) products = JSON.parse(data);
-        dataRecieved.id = Math.random().toString();
-        products.push(dataRecieved);
-        fs.writeFile(p, JSON.stringify(products), err => console.log(err));
-    });
-};
+// <--------------------- GET A SPECIFIC PRODUCT (SEARCH BY ID) --------------------> //
+exports.findById = (id) => db.execute('SELECT * FROM products WHERE id = ?', [id]);
 
-exports.viewProduct = (cb) => {
-    fs.readFile(p, (err, data) => {
-        if (err) return cb([]);
-        return cb(JSON.parse(data));
-    });
-};
+// <--------------------- UPDATE A SPECIFIC PRODUCT --------------------> //
+exports.updateProduct = (product) => db.execute('UPDATE products SET title = ?, imageUrl = ?, price = ?, description = ? WHERE id = ? ',
+    [product.title, product.imageUrl, product.price, product.description, product.id]);
 
-exports.findById = (id, cb) => {
-    fs.readFile(p, (err, data) => {
-        if (err) return cb([]);
-        const products = JSON.parse(data);
-        return cb(products.find(val => Number(val.id) === Number(id)));
-    });
-}
-
-exports.updateProduct = (product) => {
-    fs.readFile(p, (err, data) => {
-        if (err) console.log(err);
-        const allProducts = JSON.parse(data);
-        const findProductIndex = allProducts.findIndex(val => Number(val.id) === Number(product.id));
-        allProducts[findProductIndex] = product;
-        fs.writeFile(p, JSON.stringify(allProducts), err => console.log(err));
-    });
-};
-
-exports.deleteProduct = (productId) => {
-    fs.readFile(p, (err, data) => {
-        if (err) console.log(err);
-        const allProducts = JSON.parse(data);
-        const filteringProducts = allProducts.filter(val => Number(val.id) !== Number(productId));
-        const deletedProduct = allProducts.filter(val => Number(val.id) === Number(productId));
-        // console.log();
-        const deletedProductPrice = Number(deletedProduct[0].price);
-        cartModal.deleteWholeProduct(productId, deletedProductPrice);
-        fs.writeFile(p, JSON.stringify(filteringProducts), err => console.log(err));
-    });
-};
+// <--------------------- DELETE A PRODUCT (USING ID) --------------------> //
+exports.deleteProduct = (productId) => db.execute('DELETE FROM products WHERE id = ?', [productId]);

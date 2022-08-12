@@ -1,57 +1,28 @@
-// const products = [];
-
 const productModal = require('../modals/product');
 const cartModal = require('../modals/cart');
 
-exports.getShop = (req, res, next) => {
-    // console.log(adminData.products);
-    // res.sendFile(path.join(rootDir, 'views', 'shop.pug'));
-    productModal.viewProduct(products => {
-        res.render('shop/product-list', { prods: products, pageTitle: "All Products", path: '/products' });
-    });
-}
+// <--------------------- GET ALL PRODUCTS FROM CART --------------------> //
+exports.getShop = (req, res, next) => productModal.viewProduct().
+    then(([data, fieldData]) => res.render('shop/product-list', { prods: data, pageTitle: "Shop", path: '/products' })).catch(err => console.log(err));
 
-exports.getIndex = (req, res) => {
-    // res.render('shop/index', { pageTitle: "Shop", path: '/' });
-    productModal.viewProduct(products => {
-        res.render('shop/index', { prods: products, pageTitle: "Shop", path: '/' });
-    });
-};
+exports.getIndex = (req, res) => productModal.viewProduct().
+    then(([data, fieldData]) => res.render('shop/index', { prods: data, pageTitle: "Shop", path: '/' })).catch(err => console.log(err));
 
-exports.getCart = (req, res) => {
-    cartModal.getCart(cart => {
-        productModal.viewProduct(products => {
-            const cartProducts = [];
-            products.forEach(prod => {
-                const cartSingleProduct = cart.products.find(val => Number(val.id) === Number(prod.id));
-                if (cartSingleProduct) cartProducts.push({ productData: prod, qty: cartSingleProduct.qty });
-            });
-            res.render('shop/cart', { products: cartProducts, pageTitle: "Your Cart", path: '/cart' });
+exports.getCart = (req, res) => cartModal.getCart().
+    then(([data, fieldData]) => res.render('shop/cart', { products: data, pageTitle: "Your Cart", path: '/cart' })).catch(err => console.log(err));
 
-        });
-    })
-};
+exports.getCheckout = (req, res) => res.render('shop/checkout', { pageTitle: "Checkout", path: "/checkout" });
 
-exports.getCheckout = (req, res) => {
-    res.render('shop/checkout', { pageTitle: "Checkout", path: "/checkout" });
-};
-
-exports.getOrders = (req, res) => {
-    res.render('shop/orders', { pageTitle: "Your Orders", path: "/orders" });
-};
+exports.getOrders = (req, res) => res.render('shop/orders', { pageTitle: "Your Orders", path: "/orders" });
 
 exports.getProducts = (req, res) => {
     const prodId = req.params.productId;
-    productModal.findById(prodId, product => {
-        res.render('shop/product-detail', { prods: product, pageTitle: product.title, path: '/products' })
-    });
+    productModal.findById(prodId).then(([[data], fieldData]) => res.render('shop/product-detail', { prods: data, pageTitle: data.title, path: '/products' }));
 };
 
 exports.postCart = (req, res) => {
-    const prodId = req.body.productId;
-    productModal.findById(prodId, product => {
-        cartModal.addProduct(prodId, product);
-    });
+    // const prodId = req.body.productId;
+    productModal.findById(req.body.productId);
     res.redirect('/cart');
 };
 

@@ -1,41 +1,28 @@
 const productModal = require('../modals/product');
 
+// <--------------------- SHOW ALL PRODUCTS --------------------> //
+exports.getProducts = (req, res) => productModal.viewProduct().
+    then(([data, fieldData]) => res.render('admin/products', { prods: data, pageTitle: 'Admin Products', path: '/admin/products' })).catch(err => console.log(err));
 
-exports.getProducts = (req, res) => {
-    productModal.viewProduct(products => {
-        res.render('admin/products', { prods: products, pageTitle: 'Admin Products', path: '/admin/products' });
-    });
-};
+// <--------------------- ADD A NEW PRODUCT --------------------> //
+exports.getAddProduct = (req, res, next) => res.render('admin/edit-product', { pageTitle: 'Add Product', path: '/admin/add-product', editing: "false" });
 
-exports.getAddProduct = (req, res, next) => {
-    // res.sendFile(path.join(rootDir, 'views', 'add-product.pug'));
-    res.render('admin/edit-product', { pageTitle: 'Add Product', path: '/admin/add-product', editing: "false" });
-};
+// <--------------------- NEW PRODUCT DATA --------------------> //
+exports.postAddProduct = (req, res) => productModal.product({ title: req.body.title, imageUrl: req.body.imageUrl, price: req.body.price, description: req.body.description }).
+    then(() => res.redirect('/')).catch(error => console.log(error));
 
-exports.postAddProduct = (req, res, next) => {
-    // console.log(req.body);
-    // products.push({ title: req.body.title });
-    productModal.product({ title: req.body.title, imageUrl: req.body.imageUrl, price: req.body.price, description: req.body.description });
-    res.redirect('/');
-}
-
+// <--------------------- EDIT DETAILS OF AN EXISTING PRODUCT --------------------> //
 exports.getEditProduct = (req, res, next) => {
-    const editMode = req.query.edit;
-    const productId = req.params.productId;
-    if (!editMode) return res.redirect('/');
-    productModal.findById(productId, (product => {
-        if (!product) return res.redirect('/');
-        res.render('admin/edit-product', { prod: product, pageTitle: 'Edit Product', path: '/admin/edit-product', editing: editMode });
-    }));
+    productModal.findById(req.params.productId)
+        .then(([[data], fieldData]) => data ? res.render('admin/edit-product', { prod: data, pageTitle: 'Edit Product', path: '/admin/edit-product', editing: req.query.edit }) : res.redirect('/'))
+        .catch(err => console.log(err));
 };
 
+// <--------------------- DATA RECIEVED FROM THE EDIT FORM --------------------> //
 exports.postEditProduct = (req, res) => {
-    productModal.updateProduct({ id: req.body.id, title: req.body.title, imageUrl: req.body.imageUrl, price: req.body.price, description: req.body.description });
-    res.redirect('/');
+    productModal.updateProduct({ id: req.body.id, title: req.body.title, imageUrl: req.body.imageUrl, price: req.body.price, description: req.body.description }).
+        then(val => res.redirect('/')).catch(err => console.log(err));
 };
 
-exports.postDeleteProduct = (req, res) => {
-    productModal.deleteProduct(req.body.id);
-  
-    res.redirect('/');
-};
+// <--------------------- DELETE AN EXISTING PRODUCT --------------------> //
+exports.postDeleteProduct = (req, res) => productModal.deleteProduct(req.body.id).then(val => res.redirect('/')).catch(err => console.log(err));
