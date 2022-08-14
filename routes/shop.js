@@ -12,18 +12,18 @@ const router = express.Router();
 
 router.get('/', shopController.getIndex);
 
-router.get('/products', shopController.getShop);
+// router.get('/products', shopController.getShop);
 
-router.get('/products/:productId', shopController.getProducts);
+// router.get('/products/:productId', shopController.getProducts);
 
-router.get('/cart', shopController.getCart);
+// router.get('/cart', shopController.getCart);
 
-router.post('/cart', shopController.postCart);
+// router.post('/cart', shopController.postCart);
 
-router.get('/orders', shopController.getOrders);
+// router.get('/orders', shopController.getOrders);
 
-router.get('/checkout', shopController.getCheckout);
+// router.get('/checkout', shopController.getCheckout);
 
-router.post('/cart-delete-item', shopController.postRemoveCartItem);
+// router.post('/cart-delete-item', shopController.postRemoveCartItem);
 
 module.exports = router;
