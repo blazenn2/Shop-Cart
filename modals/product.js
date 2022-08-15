@@ -1,4 +1,5 @@
 const getDb = require('../util/database').getDb;
+const ObjectId = require('../util/database').ObjectId;
 
 // <--------------------- POST ALL PRODUCTS --------------------> //
 exports.addProduct = (product) => {
@@ -15,17 +16,26 @@ exports.viewProduct = () => {
 // <--------------------- GET A SPECIFIC PRODUCT (SEARCH BY ID) --------------------> //
 exports.findById = (productId) => {
     const db = getDb();
-    return db.collection('products').findOne({ id: productId }).toArray();
+    const productObjectId = ObjectId(productId);
+    return db.collection('products').find({ _id: productObjectId }).toArray();
 };
 
 // <--------------------- UPDATE A SPECIFIC PRODUCT --------------------> //
-exports.updateProduct = (productId, productInfo) => {
+exports.updateProduct = (updatedProduct) => {
     const db = getDb();
-    return db.collection('products').update({ id: productId }, { $set: productInfo });
+    const productObj = {
+        _id: ObjectId(updatedProduct.id),
+        title: updatedProduct.title,
+        description: updatedProduct.description,
+        imageUrl: updatedProduct.imageUrl,
+        price: updatedProduct.price
+    }
+    return db.collection('products').update({ _id: ObjectId(updatedProduct.id) }, { $set: productObj });
 };
 
 // <--------------------- DELETE A PRODUCT (USING ID) --------------------> //
 exports.deleteProduct = (productId) => {
     const db = getDb();
-    return db.collection('products').remove({ id: productId });
+    const productObejctId = ObjectId(productId);
+    return db.collection('products').remove({ _id: productObejctId });
 };

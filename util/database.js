@@ -1,6 +1,6 @@
 const dotenv = require("dotenv").config();
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 // Connection URL
 const client = new MongoClient(`${process.env.MONGODB}`, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
@@ -24,3 +24,4 @@ const getDb = () => {
 
 exports.mongoConnect = mongoConnect;
 exports.getDb = getDb;
+exports.ObjectId = ObjectId;
