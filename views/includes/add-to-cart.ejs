@@ -1,6 +1,6 @@
 <form action="/cart" method="POST">
     <div class="card__actions">
         <button class="btn">Add to Cart</button>
-        <input type="hidden" value="<%= prods.id %> " name="productId"">
+        <input type="hidden" value="<%= prods._id.toString() %>" name="productId"">
     </div>
 </form>
