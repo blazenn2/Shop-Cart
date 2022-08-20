@@ -13,23 +13,17 @@ exports.getShop = (req, res) => productModal.viewProduct().
 exports.getCart = (req, res) => cartModal.getCart().then(cart => res.render('shop/cart', { products: cart, pageTitle: "Cart", path: '/cart' }));
 
 // <--------------------- SHOW CHECKOUT PAGE --------------------> //
-// exports.getCheckout = (req, res) => {
+exports.getCheckout = (req, res) => res.render('shop/checkout', { pageTitle: "Checkout", path: "/checkout" });
 
-// };
-
-// <--------------------- SHOW ALL ORDERS --------------------> //
-// exports.getOrders = (req, res) => {
-
-// };
+// <---------------------  --------------------> //
+exports.getOrders = (req, res) => res.render('shop/orders', { pageTitle: "Your Orders", path: "/orders" });
 
 // <--------------------- SHOW PRODUCT DETAIL PAGE --------------------> //
 exports.getProducts = (req, res) => productModal.findById(req.params.productId).
     then(([product]) => res.render('shop/product-detail', { prods: product, pageTitle: product.title, path: '/products' })).catch(err => console.log(err));
 
 // <--------------------- ADD A PRODUCT TO CART (POST) --------------------> //
-exports.postCart = (req, res) => cartModal.addProduct(req.body.productId).then(val => res.redirect('/cart')).catch(err => console.log(err));;
+exports.postCart = (req, res) => cartModal.addProduct(req.body.productId).then(val => res.redirect('/cart')).catch(err => console.log(err));
 
 // <--------------------- REMOVE A PRODUCT FROM CART (POST) --------------------> //
-// exports.postRemoveCartItem = (req, res) => {
-
-// };
+exports.postRemoveCartItem = (req, res) => cartModal.removeItemFromCart(req.body.productId).then(val => res.redirect('/cart')).catch(err => console.log(err));

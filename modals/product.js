@@ -1,5 +1,6 @@
 const getDb = require('../util/database').getDb;
 const ObjectId = require('../util/database').ObjectId;
+const cartModal = require('./cart');
 
 // <--------------------- POST ALL PRODUCTS --------------------> //
 exports.addProduct = (product) => {
@@ -34,8 +35,10 @@ exports.updateProduct = (updatedProduct) => {
 };
 
 // <--------------------- DELETE A PRODUCT (USING ID) --------------------> //
-exports.deleteProduct = (productId) => {
+exports.deleteProduct = async (productId) => {
     const db = getDb();
     const productObejctId = ObjectId(productId);
+    const [product] = await db.collection('products').find({ _id: productObejctId }).toArray();
+    cartModal.deleteWholeProduct(productObejctId, product.price);
     return db.collection('products').remove({ _id: productObejctId });
 };

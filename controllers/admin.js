@@ -2,7 +2,7 @@ const productModal = require('../modals/product');
 
 // <--------------------- SHOW ALL PRODUCTS --------------------> //
 exports.getProducts = (req, res) => productModal.viewProduct().
-    then(products => res.render('admin/products', { prods: products, pageTitle: "Products", path: "/products" })).catch(err => console.log(err));
+    then(products => res.render('admin/products', { prods: products, pageTitle: "Products", path: "/admin/products" })).catch(err => console.log(err));
 
 // <--------------------- ADD A NEW PRODUCT --------------------> //
 exports.getAddProduct = (req, res) => res.render('admin/edit-product', { pageTitle: 'Add Product', path: '/admin/add-product', editing: "false" });
@@ -19,4 +19,5 @@ exports.getEditProduct = (req, res) => productModal.findById(req.params.productI
 exports.postEditProduct = (req, res) => productModal.updateProduct(req.body).then(val => res.redirect('/')).catch(err => console.log(err));
 
 // <--------------------- DELETE AN EXISTING PRODUCT --------------------> //
-exports.postDeleteProduct = (req, res) => productModal.deleteProduct(req.body.id).then(val => res.redirect('/')).catch(err => console.log(err));
+exports.postDeleteProduct = (req, res) => productModal.deleteProduct(req.body.id)
+.then(val => res.redirect('/')).catch(err => console.log(err));
