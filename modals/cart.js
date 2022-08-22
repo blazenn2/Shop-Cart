@@ -1,17 +1,21 @@
 
 
-exports.addProduct = (productId, product) => {
+// <--------------------- GET ALL PRODUCTS OF CART --------------------> //
+exports.getCart = () => {
 
 };
 
-exports.deleteCart = (id, productPrice) => {
+// <--------------------- ADD A PRODUCT TO CART --------------------> //
+exports.addProduct = () => {
 
 };
 
-exports.deleteWholeProduct = (id, productPrice) => {
+// <--------------------- REDUCE A PRODUCT FROM CART --------------------> //
+exports.deleteCart = () => {
+
+};
+
+// <--------------------- ELIMINATE THE PRODUCT FROM THE CART --------------------> //
+exports.deleteWholeProduct = () => {
 
 }
-
-exports.getCart = (cb) => {
-
-};

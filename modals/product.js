@@ -1,21 +1,26 @@
-const cartModal = require('../modals/cart');
+const mongoose = require('mongoose');
 
-exports.product = (dataRecieved) => {
+const Schema = mongoose.Schema;
 
-};
+// <-------------------- PRODUCT SCHEMA DECLARATION --------------------> //
 
-exports.viewProduct = (cb) => {
+const productSchema = new Schema({
+    title: {
+        type: String,
+        required: true
+    },
+    imageUrl: {
+        type: String,
+        required: true
+    },
+    price: {
+        type: Number,
+        required: true
+    },
+    description: {
+        type: String,
+        required: true
+    }
+});
 
-};
-
-exports.findById = (id, cb) => {
-
-}
-
-exports.updateProduct = (product) => {
-
-};
-
-exports.deleteProduct = (productId) => {
-
-};
+exports.productSchema = mongoose.model('Product', productSchema);
