@@ -1,4 +1,5 @@
 const productModal = require('../modals/product');
+const cartModal = require('../modals/cart');
 var mongoose = require('mongoose');
 // var id = mongoose.Types.ObjectId('4edd40c86762e0fb12000003');
 
@@ -29,4 +30,4 @@ exports.postEditProduct = (req, res) => productModal.productSchema.updateOne({ _
 }).then(val => res.redirect('/')).catch(err => console.log(err));
 
 // <--------------------- DELETE AN EXISTING PRODUCT --------------------> //
-exports.postDeleteProduct = (req, res) => productModal.productSchema.remove({ _id: mongoose.Types.ObjectId(req.body.id) }).then(val => res.redirect('/')).catch(err => console.log(err));
+exports.postDeleteProduct = (req, res) => cartModal.deleteWholeCart(req.body.id).then(val => res.redirect('/')).catch(err => console.log(err));
