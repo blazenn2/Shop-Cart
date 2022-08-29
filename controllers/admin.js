@@ -4,10 +4,10 @@ var mongoose = require('mongoose');
 // var id = mongoose.Types.ObjectId('4edd40c86762e0fb12000003');
 
 // <--------------------- SHOW ALL PRODUCTS --------------------> //
-exports.getProducts = (req, res) => productModal.productSchema.find().then(products => res.render('admin/products', { prods: products, pageTitle: "Products", path: '/admin/products' })).catch(err => console.log(err));
+exports.getProducts = (req, res) => productModal.productSchema.find().then(products => res.render('admin/products', { prods: products, pageTitle: "Products", path: '/admin/products', isAuthenticated: req.session.isLoggedIn })).catch(err => console.log(err));
 
 // <--------------------- ADD A NEW PRODUCT --------------------> //
-exports.getAddProduct = (req, res) => res.render('admin/edit-product', { pageTitle: 'Add Product', path: '/admin/add-product', editing: "false" });
+exports.getAddProduct = (req, res) => res.render('admin/edit-product', { pageTitle: 'Add Product', path: '/admin/add-product', editing: "false", isAuthenticated: req.session.isLoggedIn });
 
 // <--------------------- NEW PRODUCT DATA --------------------> //
 exports.postAddProduct = (req, res) => new productModal.productSchema({
@@ -19,7 +19,7 @@ exports.postAddProduct = (req, res) => new productModal.productSchema({
 
 // <--------------------- EDIT DETAILS OF AN EXISTING PRODUCT --------------------> //
 exports.getEditProduct = (req, res) => productModal.productSchema.find({ _id: mongoose.Types.ObjectId(req.params.productId) }).
-    then(([product]) => res.render('admin/edit-product', { prod: product, pageTitle: "Edit Product", path: "/admin/products", editing: "true" })).catch(err => console.log(err));
+    then(([product]) => res.render('admin/edit-product', { prod: product, pageTitle: "Edit Product", path: "/admin/products", editing: "true", isAuthenticated: req.session.isLoggedIn })).catch(err => console.log(err));
 
 // <--------------------- DATA RECIEVED FROM THE EDIT FORM --------------------> //
 exports.postEditProduct = (req, res) => productModal.productSchema.updateOne({ _id: mongoose.Types.ObjectId(req.body.id) }, {
